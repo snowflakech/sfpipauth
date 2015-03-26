@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2012-04-05T09:09:01Z" product-name="sfpipauth">
+		<header/>
+		<body>
+			<trans-unit id="tx_sfpipauth_ipconfiguration">
+				<source>IP-Authentication configuration</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.ip">
+				<source>IP</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.feusers">
+				<source>FE-Users</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.fegroups">
+				<source>FE-Group</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode">
+				<source>Login-Mode</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.0">
+				<source>Don't care (disable IP-mode)</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.1">
+				<source>Autologin, normal login if no match (recommended)</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.2">
+				<source>Autologin, disable login if no match</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.3">
+				<source>Enable normal login, disable any login if no match</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
