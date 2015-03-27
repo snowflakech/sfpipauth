@@ -1,1 +1,1 @@
-# sfpipauth
+# IP Authentication Service

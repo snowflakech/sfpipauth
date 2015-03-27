@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2012-08-31T17:54:12Z" product-name="lang">
+		<header/>
+		<body>
+
+			<trans-unit id="tx_sfpipauth_ipconfiguration" xml:space="preserve">
+				<source>IP-Authentication configuration</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.name" xml:space="preserve">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.ip" xml:space="preserve">
+				<source>IP</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.feusers" xml:space="preserve">
+				<source>FE-Users</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.fegroups" xml:space="preserve">
+				<source>FE-Group</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode" xml:space="preserve">
+				<source>Login-Mode</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.0" xml:space="preserve">
+				<source>Don't care (disable IP-mode)</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.1" xml:space="preserve">
+				<source>Autologin, normal login if no match (recommended)</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.2" xml:space="preserve">
+				<source>Autologin, disable login if no match</source>
+			</trans-unit>
+			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.3" xml:space="preserve">
+				<source>Enable normal login, disable any login if no match</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

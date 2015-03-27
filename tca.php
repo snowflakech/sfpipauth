@@ -4,13 +4,12 @@ if (!defined('TYPO3_MODE')) {
 }
 
 $TCA['tx_sfpipauth_ipconfiguration'] = array (
-	'ctrl' => $TCA['tx_sfpipauth_ipconfiguration']['ctrl'],
 	'interface' => array (
 		'showRecordFieldList' => 'hidden,name,ip,feusers,fegroups,loginmode'
 	),
 	'feInterface' => $TCA['tx_sfpipauth_ipconfiguration']['feInterface'],
 	'columns' => array (
-		'hidden' => array (		
+		'hidden' => array (
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
 			'config'  => array (
@@ -18,44 +17,44 @@ $TCA['tx_sfpipauth_ipconfiguration'] = array (
 				'default' => '0'
 			)
 		),
-		'name' => array (		
-			'exclude' => 1,		
-			'label' => 'LLL:EXT:sfpipauth/locallang_db.xml:tx_sfpipauth_ipconfiguration.name',		
+		'name' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:sfpipauth/locallang_db.xml:tx_sfpipauth_ipconfiguration.name',
 			'config' => array (
-				'type' => 'input',	
-				'size' => '30',	
+				'type' => 'input',
+				'size' => '30',
 				'eval' => 'required',
 			)
 		),
-		'ip' => array (		
-			'exclude' => 1,		
-			'label' => 'LLL:EXT:sfpipauth/locallang_db.xml:tx_sfpipauth_ipconfiguration.ip',		
+		'ip' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:sfpipauth/locallang_db.xml:tx_sfpipauth_ipconfiguration.ip',
 			'config' => array (
-				'type' => 'input',	
-				'size' => '30',	
+				'type' => 'input',
+				'size' => '30',
 				'eval' => 'required',
 			)
 		),
-		'feusers' => array (		
-			'exclude' => 1,		
-			'label' => 'LLL:EXT:sfpipauth/locallang_db.xml:tx_sfpipauth_ipconfiguration.feusers',		
+		'feusers' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:sfpipauth/locallang_db.xml:tx_sfpipauth_ipconfiguration.feusers',
 			'config' => array (
-				'type' => 'group',	
-				'internal_type' => 'db',	
-				'allowed' => 'fe_users',	
-				'size' => 1,	
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'fe_users',
+				'size' => 1,
 				'minitems' => 0,
 				'maxitems' => 1,
 			)
 		),
-		'fegroups' => array (		
-			'exclude' => 1,		
-			'label' => 'LLL:EXT:sfpipauth/locallang_db.xml:tx_sfpipauth_ipconfiguration.fegroups',		
+		'fegroups' => array (
+			'exclude' => 1,
+			'label' => 'LLL:EXT:sfpipauth/locallang_db.xml:tx_sfpipauth_ipconfiguration.fegroups',
 			'config' => array (
-				'type' => 'group',	
-				'internal_type' => 'db',	
-				'allowed' => 'fe_groups',	
-				'size' => 5,	
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'fe_groups',
+				'size' => 5,
 				'minitems' => 0,
 				'maxitems' => 9999,
 			)
