@@ -20,10 +20,10 @@ return array (
 		'searchFields' => 'name, ip'
 	),
 	'interface' => array (
-		'showRecordFieldList' => 'hidden, name, ip,feusers, fegroups, loginmode'
+		'showRecordFieldList' => 'hidden, name, ip,feusers, loginmode'
 	),
 	'types' => array (
-		'0' => array ('showitem' => 'name, ip, feusers, fegroups, loginmode, hidden')
+		'0' => array ('showitem' => 'name, ip, feusers, loginmode, hidden')
 	),
 	'palettes' => array(
 		'canNotCollapse' => '1'
@@ -67,18 +67,6 @@ return array (
 				'maxitems' => 1,
 			)
 		),
-		'fegroups' => array (
-			'exclude' => 0,
-			'label' => $ll . 'tx_sfpipauth_ipconfiguration.fegroups',
-			'config' => array (
-				'type' => 'group',
-				'internal_type' => 'db',
-				'allowed' => 'fe_groups',
-				'size' => 5,
-				'minitems' => 0,
-				'maxitems' => 9999,
-			)
-		),
 		'loginmode' => array (
 			'exclude' => 0,
 			'label' => $ll . 'tx_sfpipauth_ipconfiguration.loginmode',
@@ -88,7 +76,6 @@ return array (
 					array ($ll . 'tx_sfpipauth_ipconfiguration.loginmode.I.1', 1),
 					array ($ll . 'tx_sfpipauth_ipconfiguration.loginmode.I.2', 2),
 					array ($ll . 'tx_sfpipauth_ipconfiguration.loginmode.I.3', 3),
-					array ($ll . 'tx_sfpipauth_ipconfiguration.loginmode.I.0', 0),
 				),
 			)
 		),

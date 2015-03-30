@@ -2,6 +2,7 @@
 namespace Snowflake\Sfpipauth\Service;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Sv\AbstractAuthenticationService;
 
 
 /**
@@ -9,7 +10,53 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @package Snowflake\Sfpipauth\Service
  */
-class IpAuthenticationService extends AbstractIpAuthenticationService {
+class IpAuthenticationService extends AbstractAuthenticationService {
+
+
+	/**
+	 * @var array
+	 */
+	protected $ipConfigurations = [];
+
+
+	// TODO: $this->cObj->enableFields
+
+	/**
+	 *
+	 */
+	public function __construct() {
+
+		// Get all available ip configurations
+		$result = $this->getDatabaseConnection()->exec_SELECTgetRows(
+			'ip,feusers,loginmode',
+			'tx_sfpipauth_ipconfiguration',
+			'hidden=0 AND deleted=0'
+		);
+
+		if (is_array($result)) {
+			$this->ipConfigurations = $result;
+		}
+
+	}
+
+
+	/**
+	 * Find user by incoming ip address
+	 *
+	 * @return array|bool
+	 */
+	public function getUser() {
+
+		$user = FALSE;
+
+		if ($this->mode === 'getUserFE' && $this->login['status'] !== 'login') {
+
+			// Find user by incoming ip address
+			$user = $this->findUserByIp($this->authInfo['REMOTE_ADDR']);
+		}
+
+		return $user;
+	}
 
 
 	/**
@@ -23,86 +70,120 @@ class IpAuthenticationService extends AbstractIpAuthenticationService {
 		// If there is no ip list given then the user is valid
 		$authentication = 100;
 
-		if ($this->authInfo['loginType'] == 'FE') {
+		if ($this->authInfo['loginType'] === 'FE' && $this->login['status'] !== 'login') {
 
-			// Find ip configuration for provided user
-			$ipConfiguration = $this->findConfigurationByUserId($user['uid']);
+			// Find ip configurations for provided user
+			$ipConfigurations = $this->findConfigurationsByUserId($user['uid']);
 
-			if ($ipConfiguration !== NULL) {
+			$userIp = $this->authInfo['REMOTE_ADDR'];
 
-				$userIp = $this->authInfo['REMOTE_ADDR'];
+			// Get first match
+			foreach ($ipConfigurations as $ipConfiguration) {
+
 				$ipMatch = GeneralUtility::cmpIP($userIp, $ipConfiguration['ip']);
 
-				switch ($ipConfiguration['loginmode']) {
-					case 0:
-						$authentication = 100;
+				if ($ipMatch && ($ipConfiguration['loginmode'] == 1 || $ipConfiguration['loginmode'] == 2)) {
+					$authentication = $this->getAuthenticationByLoginMode($ipMatch, $ipConfiguration['loginmode']);
+					if ($authentication !== 100) {
 						break;
-					case 1:
-						$authentication = $ipMatch ? 200 : 100;
-						break;
-					case 2:
-						$authentication = $ipMatch ? 200 : FALSE;
-						break;
-					case 3:
-						$authentication = $ipMatch ? 100 : FALSE;
-						break;
-					default:
-						$this->writelog(255, 3, 3, 1, 'No loginmode (%s) but IP-match (%s). That\'s one weird user: %s.',
-							array ($ipConfiguration['loginmode'], $ipConfiguration['ip'], $userIp));
-						break;
+					}
+				} elseif (!$ipMatch && ($ipConfiguration['loginmode'] == 2 || $ipConfiguration['loginmode'] == 3)) {
+					$authentication = $this->getAuthenticationByLoginMode($ipMatch, $ipConfiguration['loginmode']);
+					break;
 				}
 			}
 		}
 
-		if (!$authentication && $this->writeAttemptLog) {
-			$this->writelog(255, 3, 3, 1,
-				"Login-attempt from %s (%s), username '%s', remote address do not match IP list!",
-				Array ($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']]));
+		return $authentication;
+	}
+
+
+	/**
+	 * Find user which matches provided ip
+	 *
+	 * @param $userIp
+	 * @return array|bool
+	 */
+	protected function findUserByIp($userIp) {
+
+		$user = FALSE;
+
+		foreach ($this->ipConfigurations as $ipConfiguration) {
+
+			$userId = $ipConfiguration['feusers'];
+
+			// Check if ip address matches && user ID is valid
+			if ($userId > 0 && GeneralUtility::cmpIP($userIp, $ipConfiguration['ip'])) {
+
+				// Get user from database
+				$user = $this->pObj->getRawUserByUid($userId);
+
+			}
 		}
 
-		return $authentication;
+		return $user;
 
 	}
 
 
 	/**
-	 * Authenticate group by ip
+	 * Find all ip configurations from specified user
 	 *
-	 * @param $user
-	 * @param $group
-	 * @return bool
+	 * @param $userId
+	 * @return array
 	 */
-	public function authGroup($user, $group) {
+	protected function findConfigurationsByUserId($userId) {
 
-		$authentication = TRUE;
+		$configurations = [];
 
-		if ($this->mode == 'authGroupsFE') {
+		foreach ($this->ipConfigurations as $ipConfiguration) {
 
-			// Find ip configuration for provided user
-			$ipConfiguration = $this->findConfigurationByGroupId($group['uid']);
-
-			if ($ipConfiguration !== NULL) {
-
-				$userIp = $this->authInfo['REMOTE_ADDR'];
-				$ipMatch = GeneralUtility::cmpIP($userIp, $ipConfiguration['ip']);
-
-				switch ($ipConfiguration['loginmode']) {
-					case 0:
-						$authentication = is_array($user);
-						break;
-					case 2:
-						$authentication = $ipMatch;
-						break;
-					case 3:
-						$authentication = $ipMatch;
-						break;
-				}
-
+			// If user found & ip address matches, set login mode & stop foreach
+			if (intval($userId) > 0 && (int)$ipConfiguration['feusers'] === (int)$userId) {
+				$configurations[] = $ipConfiguration;
 			}
 
 		}
 
+		return $configurations;
+
+	}
+
+
+	/**
+	 * Determinate login mode
+	 *
+	 * @param $ipMatch
+	 * @param $loginMode
+	 * @return bool|int
+	 */
+	protected function getAuthenticationByLoginMode($ipMatch, $loginMode) {
+
+		$authentication = FALSE;
+
+		switch ($loginMode) {
+			case 1:
+				$authentication = $ipMatch ? 200 : 100;
+				break;
+			case 2:
+				$authentication = $ipMatch ? 200 : 0;
+				break;
+			case 3:
+				$authentication = $ipMatch ? 100 : 0;
+				break;
+		}
+
 		return $authentication;
+	}
+
+
+	/**
+	 * Gets the database object.
+	 *
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected static function getDatabaseConnection() {
+		return $GLOBALS['TYPO3_DB'];
 	}
 
 }

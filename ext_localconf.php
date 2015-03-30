@@ -2,23 +2,6 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-// Add the services
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
-	$_EXTKEY,
-	'auth',
-	'Snowflake\\Sfpipauth\\Service\\FindUserGroupService',
-	array (
-		'title' => 'Find IP-FE-User',
-		'description' => 'Find FE-Users/groups via IP',
-		'subtype' => 'authUserFE,getUserFE,getGroupsFE',
-		'available' => TRUE,
-		'priority' => 60,
-		'quality' => 50,
-		'os' => '',
-		'exec' => '',
-		'className' => 'Snowflake\\Sfpipauth\\Service\\FindUserGroupService'
-	)
-);
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
 	$_EXTKEY,
@@ -27,9 +10,9 @@ if (!defined('TYPO3_MODE')) {
 	array (
 		'title' => 'IP-Auth FE-User',
 		'description' => 'Authenticates FE-Users/groups via IP',
-		'subtype' => 'authUserFE,authGroupsFE',
+		'subtype' => 'authUserFE, getUserFE',
 		'available' => TRUE,
-		'priority' => 40,
+		'priority' => 60,
 		'quality' => 50,
 		'os' => '',
 		'exec' => '',

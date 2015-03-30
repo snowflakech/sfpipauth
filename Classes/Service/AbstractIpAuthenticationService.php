@@ -117,24 +117,25 @@ class AbstractIpAuthenticationService extends AbstractAuthenticationService {
 
 
 	/**
+	 * Find all ip configurations from specified user
+	 *
 	 * @param $userId
-	 * @return null|
+	 * @return array
 	 */
-	protected function findConfigurationByUserId($userId) {
+	protected function findConfigurationsByUserId($userId) {
 
-		$configuration = NULL;
+		$configurations = [];
 
 		foreach ($this->ipConfigurations as $ipConfiguration) {
 
 			// If user found & ip address matches, set login mode & stop foreach
 			if (intval($userId) > 0 && (int)$ipConfiguration['feusers'] === (int)$userId) {
-				$configuration = $ipConfiguration;
-				break;
+				$configurations[] = $ipConfiguration;
 			}
 
 		}
 
-		return $configuration;
+		return $configurations;
 
 	}
 
@@ -166,11 +167,36 @@ class AbstractIpAuthenticationService extends AbstractAuthenticationService {
 
 
 	/**
+	 * @param $ipMatch
+	 * @param $loginMode
+	 * @return bool|int
+	 */
+	protected function getAuthenticationByLoginMode($ipMatch, $loginMode) {
+
+		$authentication = FALSE;
+
+		switch ($loginMode) {
+			case 1:
+				$authentication = $ipMatch ? 200 : 100;
+				break;
+			case 2:
+				$authentication = $ipMatch ? 200 : 0;
+				break;
+			case 3:
+				$authentication = $ipMatch ? 100 : 0;
+				break;
+		}
+
+		return $authentication;
+	}
+
+
+	/**
 	 * Gets the database object.
 	 *
 	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	public static function getDatabaseConnection() {
+	protected static function getDatabaseConnection() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 

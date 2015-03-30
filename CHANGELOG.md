@@ -10,4 +10,5 @@
 
 ## Breaking Changes
 
-* Change to namespaces (drop support for older TYPO3 versions)
+* Change to namespaces
+* Drop support for older TYPO3 versions
