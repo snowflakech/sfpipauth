@@ -1,0 +1,6 @@
+{
+    "name": "Snowflake/Sfpipauth",
+    "description": "This is a very fast service to log in and/or block Users by their IP.",
+    "type": "typo3-cms-extension",
+    "version": "2.0.0"
+}
