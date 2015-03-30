@@ -6,9 +6,10 @@
 
 ## Features
 
-* none
+* Multi configuration support
 
 ## Breaking Changes
 
 * Change to namespaces
 * Drop support for older TYPO3 versions
+* Drop support for authenticate groups directly (use users with related groups instead)
