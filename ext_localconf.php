@@ -10,10 +10,10 @@ if (!defined('TYPO3_MODE')) {
 	array (
 		'title' => 'IP-Auth FE-User',
 		'description' => 'Authenticates FE-Users/groups via IP',
-		'subtype' => 'authUserFE, getUserFE',
+		'subtype' => 'authUserFE,getUserFE',
 		'available' => TRUE,
-		'priority' => 60,
-		'quality' => 50,
+		'priority' => 75,
+		'quality' => 75,
 		'os' => '',
 		'exec' => '',
 		'className' => 'Snowflake\\Sfpipauth\\Service\\IpAuthenticationService'

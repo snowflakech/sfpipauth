@@ -19,8 +19,6 @@ class IpAuthenticationService extends AbstractAuthenticationService {
 	protected $ipConfigurations = [];
 
 
-	// TODO: $this->cObj->enableFields
-
 	/**
 	 *
 	 */
@@ -70,28 +68,25 @@ class IpAuthenticationService extends AbstractAuthenticationService {
 		// If there is no ip list given then the user is valid
 		$authentication = 100;
 
-		if ($this->authInfo['loginType'] === 'FE' && $this->login['status'] !== 'login') {
+		if ($this->authInfo['loginType'] === 'FE') {
 
 			// Find ip configurations for provided user
 			$ipConfigurations = $this->findConfigurationsByUserId($user['uid']);
-
 			$userIp = $this->authInfo['REMOTE_ADDR'];
+			$authentications = [];
 
 			// Get first match
 			foreach ($ipConfigurations as $ipConfiguration) {
 
 				$ipMatch = GeneralUtility::cmpIP($userIp, $ipConfiguration['ip']);
+				$loginMode = intval($ipConfiguration['loginmode']);
 
-				if ($ipMatch && ($ipConfiguration['loginmode'] == 1 || $ipConfiguration['loginmode'] == 2)) {
-					$authentication = $this->getAuthenticationByLoginMode($ipMatch, $ipConfiguration['loginmode']);
-					if ($authentication !== 100) {
-						break;
-					}
-				} elseif (!$ipMatch && ($ipConfiguration['loginmode'] == 2 || $ipConfiguration['loginmode'] == 3)) {
-					$authentication = $this->getAuthenticationByLoginMode($ipMatch, $ipConfiguration['loginmode']);
-					break;
-				}
+				$authentications[] = array ($loginMode, $this->getAuthenticationByLoginMode($ipMatch, $loginMode));
+
 			}
+
+			$authentication = $this->getAuthentication($authentications);
+
 		}
 
 		return $authentication;
@@ -117,6 +112,7 @@ class IpAuthenticationService extends AbstractAuthenticationService {
 
 				// Get user from database
 				$user = $this->pObj->getRawUserByUid($userId);
+				break;
 
 			}
 		}
@@ -174,6 +170,40 @@ class IpAuthenticationService extends AbstractAuthenticationService {
 		}
 
 		return $authentication;
+	}
+
+
+	/**
+	 * @param $authentications
+	 * @return int
+	 */
+	protected function getAuthentication($authentications) {
+
+		$authenticationComparison = 100;
+
+		$disableLogin = FALSE;
+		$autoLogin = FALSE;
+
+		foreach ($authentications as $authentication) {
+
+			if (($authentication[0] === 3 || $authentication[0] === 2) && $authentication[1] === 0) {
+				$disableLogin = TRUE;
+			}
+
+			if ($authentication[0] === 1 || $authentication[0] === 2) {
+				$autoLogin = TRUE;
+			}
+
+		}
+
+		if($disableLogin) {
+			$authenticationComparison = 0;
+		}
+		elseif($autoLogin) {
+			$authenticationComparison = 200;
+		}
+
+		return $authenticationComparison;
 	}
 
 

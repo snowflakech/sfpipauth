@@ -26,7 +26,7 @@
 				<source>Autologin, disable login if no match</source>
 			</trans-unit>
 			<trans-unit id="tx_sfpipauth_ipconfiguration.loginmode.I.3" xml:space="preserve">
-				<source>Enable normal login, disable any login if no match</source>
+				<source>Enable login if IP matches</source>
 			</trans-unit>
 
 		</body>
