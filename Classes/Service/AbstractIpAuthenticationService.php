@@ -1,16 +1,15 @@
 <?php
 namespace Snowflake\Sfpipauth\Service;
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Sv\AuthenticationService;
+use TYPO3\CMS\Sv\AbstractAuthenticationService;
 
 /**
  * Class AbstractIpAuthenticationService
  *
  * @package Snowflake\Sfpipauth\Service
  */
-class AbstractIpAuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService {
+class AbstractIpAuthenticationService extends AbstractAuthenticationService {
 
 
 	/**
@@ -85,11 +84,11 @@ class AbstractIpAuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticati
 		foreach ($this->ipConfigurations as $ipConfiguration) {
 
 			// Check if ip address matches && group ID is valid
-			if (GeneralUtility::cmpIP($userIp, $ipConfiguration['ip'])) {
+			if ($ipConfiguration['fegroups'] !== '' && GeneralUtility::cmpIP($userIp, $ipConfiguration['ip'])) {
 
 				$groupIds = array_unique(explode(',', $ipConfiguration['fegroups']));
 
-				if (count($groupIds) !== 0) {
+				if (is_array($groupIds) && count($groupIds) !== 0) {
 
 					$groupList = implode(',', $groupIds);
 
