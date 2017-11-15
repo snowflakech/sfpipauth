@@ -14,7 +14,7 @@ return array (
 		'enablecolumns' => array (
 			'disabled' => 'hidden',
 		),
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('sfpipauth') . 'Resources/Public/Icons/tx_sfpipauth_ipconfiguration.gif',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('sfpipauth') . 'Resources/Public/Icons/tx_sfpipauth_ipconfiguration.gif',
 		'hideTable' => false,
 		'dividers2tabs' => 1,
 		'searchFields' => 'name, ip'

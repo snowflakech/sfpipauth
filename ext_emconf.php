@@ -9,7 +9,7 @@ $EM_CONF[$_EXTKEY] = array (
 	'description' => 'This is a very fast service to log in and/or block Users by their IP.',
 	'category' => 'services',
 	'shy' => 0,
-	'version' => '2.0.0',
+	'version' => '2.1.0',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -31,7 +31,7 @@ $EM_CONF[$_EXTKEY] = array (
 			'depends' =>
 				array (
 					'php' => '5.4-0.0.0',
-					'typo3' => '6.2.0-6.2.99'
+					'typo3' => '6.2.0-8.7.99'
 				),
 			'conflicts' =>
 				array (),

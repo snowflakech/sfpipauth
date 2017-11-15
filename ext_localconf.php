@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
 	$_EXTKEY,
 	'auth',
-	'Snowflake\\Sfpipauth\\Service\\IpAuthenticationService',
+	'tx_sfpipauth_ip_authentication_service',
 	array (
 		'title' => 'IP-Auth FE-User',
 		'description' => 'Authenticates FE-Users/groups via IP',
