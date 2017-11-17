@@ -2,7 +2,7 @@
     "name": "Snowflake/Sfpipauth",
     "description": "This is a very fast service to log in and/or block Users by their IP.",
     "type": "typo3-cms-extension",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "homepage": "https://www.snowflake.ch/",
     "license": [
         "GPL-2.0+"
