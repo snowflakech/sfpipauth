@@ -130,7 +130,7 @@ class IpAuthenticationService extends AbstractAuthenticationService
                 $ipMatch = GeneralUtility::cmpIP($userIp, $ipConfiguration['ip']);
                 $loginMode = (int)$ipConfiguration['loginmode'];
 
-                $authentications[] = array ($loginMode, $this->getAuthenticationByLoginMode($ipMatch, $loginMode));
+                $authentications[] = array($loginMode, $this->getAuthenticationByLoginMode($ipMatch, $loginMode));
 
             }
 
