@@ -2,9 +2,9 @@
 
 namespace Snowflake\Sfpipauth\Service;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Sv\AbstractAuthenticationService;
-
+use \TYPO3\CMS\Core\Authentication\AbstractAuthenticationService;
 
 /**
  * Class IpAuthenticationService
@@ -26,32 +26,12 @@ class IpAuthenticationService extends AbstractAuthenticationService
      */
     public function __construct()
     {
+        // Get all available ip configurations
+        $result = $this->getAllAvailableIpConfigurations();
 
-        try {
-            // Get all available ip configurations
-            $result = static::getDatabaseConnection()->exec_SELECTgetRows(
-                'ip,feusers,loginmode',
-                'tx_sfpipauth_ipconfiguration',
-                'hidden=0 AND deleted=0'
-            );
-
-            if (is_array($result)) {
-                $this->ipConfigurations = $result;
-            }
-        } catch (\InvalidArgumentException $e) {
-            // cannot happen anyways
+        if (is_array($result)) {
+            $this->ipConfigurations = $result;
         }
-    }
-
-
-    /**
-     * Gets the database object.
-     *
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected static function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 
 
@@ -74,6 +54,13 @@ class IpAuthenticationService extends AbstractAuthenticationService
         return $user;
     }
 
+    protected function getAllAvailableIpConfigurations() : array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_sfpipauth_ipconfiguration');
+        return $queryBuilder->select('ip', 'feusers' ,'loginmode')->from('tx_sfpipauth_ipconfiguration')
+        ->execute()
+        ->fetchAll();
+    }
 
     /**
      * Find user which matches provided ip
